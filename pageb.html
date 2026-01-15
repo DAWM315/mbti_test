@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mbti test b</title>
+    <style>
+        /* 全局样式重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", sans-serif;
+        }
+
+        /* 渐变背景 + 装饰图案（SVG内置） */
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(255,255,255,0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(255,255,255,0.05) 0%, transparent 20%);
+        }
+
+        /* 页面容器 */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 50px; /* 加大内边距，适配大文字 */
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        /* 导航栏 - 文字放大 */
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 50px;
+            padding-bottom: 25px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        .nav .logo {
+            font-size: 36px; /* 原28px → 放大到36px */
+            font-weight: bold;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            padding: 0 5px;
+        }
+        .nav .menu a {
+            margin-left: 40px; /* 加大间距，适配大文字 */
+            text-decoration: none;
+            color: #333;
+            font-size: 20px; /* 原16px → 放大到20px */
+            transition: all 0.3s ease;
+        }
+        .nav .menu a:hover {
+            color: #667eea;
+            transform: translateY(-3px);
+        }
+
+        /* 标题 - 文字放大 */
+        .title {
+            font-size: 36px; /* 原36px → 放大到48px */
+            text-align: center;
+            margin-bottom: 60px;
+            position: relative;
+            color: #333;
+        }
+        .title::after {
+            content: "";
+            display: block;
+            width: 120px; /* 加宽装饰线，适配大标题 */
+            height: 5px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            margin: 20px auto;
+            border-radius: 3px;
+        }
+
+        /* 双卡片容器（适配2个卡片） */
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); /* 加宽卡片宽度 */
+            gap: 40px; /* 加大卡片间距 */
+            margin-bottom: 70px;
+        }
+
+        /* 卡片样式（无图片，调整高度） */
+        .card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+            transition: all 0.5s ease;
+            border: 1px solid #f8f8f8;
+            padding: 40px; /* 加大内边距，无图片更饱满 */
+            height: 100%; /* 保证两个卡片高度一致 */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        /* 卡片内容 - 文字放大 */
+        .card-content {
+            padding: 0; /* 去掉原图片后的内边距 */
+        }
+        .card-title {
+            font-size: 32px; /* 原22px → 放大到32px */
+            margin-bottom: 25px;
+            color: #333;
+            text-align: center; /* 标题居中，更美观 */
+        }
+        .card-desc {
+            color: #666;
+            line-height: 1.8; /* 加大行高，阅读更舒适 */
+            margin-bottom: 30px;
+            font-size: 20px; /* 原默认 → 放大到20px */
+        }
+        .card-btn {
+            display: inline-block;
+            padding: 15px 35px; /* 加大按钮尺寸 */
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 500;
+            font-size: 20px; /* 按钮文字放大 */
+            transition: all 0.3s ease;
+            margin: 0 auto; /* 按钮居中 */
+            display: block; /* 保证居中生效 */
+            width: fit-content;
+        }
+        .card-btn:hover {
+            background: linear-gradient(90deg, #5a6edb, #6b4191);
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        /* 底部装饰区 - 文字放大 */
+        .footer {
+            text-align: center;
+            padding-top: 40px;
+            margin-top: 60px;
+            border-top: 1px solid #f0f0f0;
+            color: #666;
+            position: relative;
+            font-size: 18px; /* 原默认 → 放大到18px */
+        }
+        .footer::before {
+            content: "";
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%) rotate(45deg);
+            width: 30px;
+            height: 30px;
+            background: white;
+            border: 1px solid #f0f0f0;
+        }
+
+        /* 淡入动画 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 响应式适配（手机端） */
+        @media (max-width: 768px) {
+        /* 容器内边距调小，适配手机屏幕 */
+        .container {
+            padding: 20px;
+        }
+        /* h1标题字体适配手机，大小更协调 */
+        .title {
+            font-size: 28px;
+            margin-bottom: 50px; /* 减少标题底部间距，适配手机紧凑布局 */
+        }
+        /* 导航栏垂直排列，加大上下间距 */
+        .nav {
+            flex-direction: column;
+            gap: 20px;
+            margin-bottom: 40px; /* 减少导航底部间距，手机端更紧凑 */
+            padding-bottom: 20px; /* 减少导航下划线的下间距 */
+        }
+        /* 导航链接调整间距和字体，避免挤在一起 */
+        .nav .menu a {
+            margin-left: 15px;
+            margin-right: 15px;
+            font-size: 18px;
+        }
+        /* 页脚字体稍调小，适配手机 */
+        .footer {
+            font-size: 16px;
+            padding-top: 30px;
+        }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 导航栏 -->
+        <div class="nav">
+            <div class="logo">mbti test</div>
+            <div class="menu">
+                <a href="#"></a>
+                <a href="#"></a>
+                <a href="#"></a>
+                <p>请发自内心地选择</p>
+            </div>
+        </div>
+
+        <!-- 标题 -->
+        <h1 class="title">侪大哥是坏人</h1>
+
+        <!-- 双卡片区域（仅保留1、2号卡片，删除3号） -->
+        <div class="card-container">
+            <!-- 卡片1 -->
+            <div class="card">
+                <div class="card-content">
+                    <h3 class="card-title">A</h3>
+                    <p class="card-desc">我是好人</p>
+                    <a href="pageba.html" class="card-btn">next</a>
+                </div>
+            </div>
+
+            <!-- 卡片2 -->
+            <div class="card">
+                <div class="card-content">
+                    <h3 class="card-title">B</h3>
+                    <p class="card-desc">我也是坏人</p>
+                    <a href="pagebb.html" class="card-btn">next</a>
+                </div>
+            </div>
+            
+        </div>
+
+        <!-- 底部 -->
+        <div class="footer">
+            <p>© 2026 mbti测试 | 看看你的内心</p>
+        </div>
+    </div>
+</body>
+</html>

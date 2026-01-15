@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mbti test</title>
+    <style>
+        /* 全局样式重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", sans-serif;
+        }
+
+        /* 渐变背景 + 装饰图案（SVG内置，无需额外图片） */
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            /* 背景装饰图案 */
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(255,255,255,0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(255,255,255,0.05) 0%, transparent 20%);
+        }
+
+        /* 页面容器（带阴影和圆角） */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            /* 淡入动画 */
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        /* 导航栏样式 */
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        .nav .logo {
+            font-size: 28px;
+            font-weight: bold;
+            /* 补充标准属性，消除兼容性提示 */
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            padding: 0 5px
+        }
+        .nav .menu a {
+            margin-left: 30px;
+            text-decoration: none;
+            color: #333;
+            font-size: 16px;
+            /* 悬浮动画 */
+            transition: all 0.3s ease;
+        }
+        .nav .menu a:hover {
+            color: #667eea;
+            transform: translateY(-3px);
+        }
+
+        /* 标题样式（带装饰线） */
+        .title {
+            font-size: 36px;
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+            color: #333;
+        }
+        .title::after {
+            content: "";
+            display: block;
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            margin: 15px auto;
+            border-radius: 2px;
+        }
+
+        /* 动态卡片容器 */
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        /* 动态卡片样式（悬浮缩放+阴影变化） */
+        .card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+            /* 平滑过渡 */
+            transition: all 0.5s ease;
+            border: 1px solid #f8f8f8;
+        }
+        .card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        /* 卡片图片 */
+        .card-img {
+            width: 100%;
+            height: 200px;
+            /* 图片自适应 */
+            object-fit: cover;
+            /* 图片渐变遮罩 */
+            position: relative;
+        }
+        .card-img::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.2));
+        }
+
+        /* 卡片内容 */
+        .card-content {
+            padding: 25px;
+        }
+        .card-title {
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        .card-desc {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        .card-btn {
+            display: inline-block;
+            padding: 10px 25px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 500;
+            /* 按钮悬浮效果 */
+            transition: all 0.3s ease;
+        }
+        .card-btn:hover {
+            background: linear-gradient(90deg, #5a6edb, #6b4191);
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        /* 底部装饰区 */
+        .footer {
+            text-align: center;
+            padding-top: 30px;
+            margin-top: 50px;
+            border-top: 1px solid #f0f0f0;
+            color: #666;
+            /* 旋转装饰SVG */
+            position: relative;
+        }
+        .footer::before {
+            content: "";
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%) rotate(45deg);
+            width: 30px;
+            height: 30px;
+            background: white;
+            border: 1px solid #f0f0f0;
+        }
+
+        /* 淡入动画 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 响应式适配（手机端） */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            .title {
+                font-size: 28px;
+            }
+            .nav {
+                flex-direction: column;
+                gap: 20px;
+            }
+            .nav .menu a {
+                margin-left: 15px;
+                margin-right: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 导航栏 -->
+        <div class="nav">
+            <div class="logo">mbti test</div>
+            <div class="menu">
+                <a href="#"></a>
+                <a href="#"></a>
+                <a href="#"></a>
+                <p> 请发自内心地选择</p>
+            </div>
+        </div>
+
+        <!-- 标题 -->
+        <h1 class="title">测试一下你的mbti</h1>
+
+        <!-- 动态卡片区域 -->
+        <div class="card-container">
+            <!-- 卡片1 -->
+            <div class="card">
+                <img src="https://picsum.photos/600/400?random=1" alt="风景图1" class="card-img">
+                <div class="card-content">
+                    <h3 class="card-title">A</h3>
+                    <p class="card-desc">侪大哥是好人</p>
+                    <a href="pagea.html" class="card-btn">next</a>
+                </div>
+            </div>
+
+            <!-- 卡片2 -->
+            <div class="card">
+                <img src="https://picsum.photos/600/400?random=2" alt="风景图2" class="card-img">
+                <div class="card-content">
+                    <h3 class="card-title">B</h3>
+                    <p class="card-desc">侪大哥是坏人</p>
+                    <a href="pageb.html" class="card-btn">next</a>
+                </div>
+            </div>
+
+            <!-- 卡片3 -->
+            <div class="card">
+                <img src="https://picsum.photos/600/400?random=3" alt="风景图3" class="card-img">
+                <div class="card-content">
+                    <h3 class="card-title">C</h3>
+                    <p class="card-desc">侪大哥有点好</p>
+                    <a href="pagec.html" class="card-btn">next</a>
+                </div>
+            </div>
+
+            <!-- 卡片4 -->
+            <div class="card">
+                <img src="https://picsum.photos/600/400?random=4" alt="风景图4" class="card-img">
+                <div class="card-content">
+                    <h3 class="card-title">D</h3>
+                    <p class="card-desc">侪大哥有点坏</p>
+                    <a href="paged.html" class="card-btn">next</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 底部 -->
+        <div class="footer">
+            <p>© 2026 mbti测试 | 看看你的内心</p>
+        </div>
+    </div>
+</body>
+</html>
